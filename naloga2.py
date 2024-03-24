@@ -36,8 +36,25 @@ def filtriraj_z_gaussovim_jedrom(slika, sigma):
 
 def filtriraj_sobel_smer(slika):
     '''Filtrira sliko z Sobelovim jedrom in označi gradiente v orignalni sliki glede na ustrezen pogoj.'''
-    pass
+    jedro = np.array([[1, 2, 1],
+                      [0, 0, 0],
+                      [-1, -2, -1]])
+
+    return konvolucija(slika, jedro)
 
 
 if __name__ == '__main__':
+    slika = cv.imread(".utils/lenna.png")
+    slika = cv.cvtColor(slika, cv.COLOR_BGR2GRAY)
+    # slika = cv.resize(slika, (1000, 1000))
+    slika = filtriraj_sobel_smer(slika)
+    show = cv.cvtColor(slika, cv.COLOR_GRAY2BGR)
+    vis, sir = slika.shape
+    for i in range(vis):
+        for j in range(sir):
+            if slika[i, j] > 120:
+                show[i, j] = (255, slika[i, j] / 2, slika[i, j] / 2)
+    cv.imshow("Filtered", show)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
     pass
